@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5e1a1e">
+  <title>Прогноз на год</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell matrix-app">
+    <header class="masthead"><div class="brand-mark">✦</div><div class="brand-name">МАТРИЦА СУДЬБЫ <span>прогноз на год</span></div></header>
+    <section class="hero">
+      <p class="eyebrow">Персональный разбор</p>
+      <h1>Ваш прогноз<br><em>на год</em></h1>
+      <p class="hero-copy">Посмотрите на главные темы года, свои ресурсы, важные сферы и энергии каждого месяца.</p>
+      <form id="forecast-form" class="form-card">
+        <label>Дата рождения<input id="birth-date" type="date" required min="1900-01-01"></label>
+        <label>Год прогноза<input id="forecast-year" type="number" required min="1900" max="2200" step="1"></label>
+        <button type="submit">Рассчитать прогноз <span>→</span></button>
+        <p class="form-note">Расчёт выполняется в браузере. Дата не отправляется на сервер.</p>
+      </form>
+      <div id="form-error" class="error" role="alert" hidden></div>
+    </section>
+    <section id="result" hidden aria-live="polite"></section>
+    <footer><span>МАТРИЦА СУДЬБЫ</span><span>Матрица года: карта тем и ориентиров, а не предсказание событий.</span></footer>
+  </main>
+  <script src="mx-core.js"></script>
+  <script src="export.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
