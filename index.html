@@ -18,6 +18,7 @@
       <form id="forecast-form" class="form-card">
         <label>Дата рождения<input id="birth-date" type="date" required min="1900-01-01"></label>
         <label>Год прогноза<input id="forecast-year" type="number" required min="1900" max="2200" step="1"></label>
+        <div class="gender-row"><span class="gender-label">Пол</span><div class="seg" id="gender"><button type="button" data-g="f">Женщина</button><button type="button" data-g="m">Мужчина</button></div><span class="form-note gender-note">От этого зависят рекомендации: мужчине не предложат салон красоты</span></div>
         <button type="submit">Рассчитать прогноз <span>→</span></button>
         <p class="form-note">Расчёт выполняется в браузере. Дата не отправляется на сервер.</p>
       </form>

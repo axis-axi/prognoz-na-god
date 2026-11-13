@@ -6,19 +6,21 @@
   var submitButton=form.querySelector('button[type="submit"]');submitButton.disabled=true;
   var months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
   var names=['','Маг','Жрица','Императрица','Император','Иерофант','Влюблённые','Колесница','Справедливость','Отшельник','Колесо Фортуны','Сила','Повешенный','Смерть','Умеренность','Дьявол','Башня','Звезда','Луна','Солнце','Суд','Мир','Шут'];
-  var data={energies:{},programs:{},base:{}};
+  var data={energies:{},programs:{},base:{}};var gender='';
+  function gtext(s){if(gender!=='m'||!s||!data.gender||!data.gender.m)return s;data.gender.m.forEach(function(p){s=s.split(p[0]).join(p[1]);});return s;}
 
   var SECTION_LABELS={'Период в плюсе':'Если энергия проживается в плюсе','Период в минусе':'Если энергия проживается в минусе','Суть периода':'О чём это','Ресурс периода':'Ресурс','Талант периода':'Талант','Цели периода':'На что направить силы','Экзамен периода':'Вопросы года','Практика периода':'Практика','Здоровье и тело':'Здоровье и тело','Отдых и восстановление':'Отдых и восстановление'};
   function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function inline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>');}
   function md(s){
+    s=gtext(s);
     if(!s)return '<p class="empty-text">Текст для этой позиции ещё готовится.</p>';
     var lines=s.trim().split(/\r?\n/), out=[], para=[], list=[];
     function flushP(){if(para.length){out.push('<p>'+inline(para.join(' '))+'</p>');para=[];}}
     function flushL(){if(list.length){out.push('<ul>'+list.map(function(x){return '<li>'+inline(x)+'</li>';}).join('')+'</ul>');list=[];}}
     lines.forEach(function(raw){var line=raw.trim();if(!line||/^---+$/.test(line)){flushP();flushL();return;}var m=/^[-*]\s+(.+)/.exec(line);if(m){flushP();list.push(m[1]);return;}flushL();para.push(line);});flushP();flushL();return out.join('');
   }
-  function text(n,section){var e=data.energies[String(n)];if(!e)return '';var keys=Object.keys(e.sections);var exact=keys.filter(function(k){return k.toLowerCase()===section.toLowerCase();})[0];return exact?e.sections[exact]:'';}
+  function text(n,section){var e=data.energies[String(n)];if(!e)return '';var keys=Object.keys(e.sections);var exact=keys.filter(function(k){return k.toLowerCase()===section.toLowerCase();})[0];return exact?gtext(e.sections[exact]):'';}
   function lowerFirst(s){s=String(s||'').trim();return s?s.charAt(0).toLowerCase()+s.slice(1):s;}
   function retime(s,unit){if(!s)return s;var per=unit==='period',u=per?{n:'период',g:'периода',d:'периоду',i:'периодом',N:'Период'}:{n:'месяц',g:'месяца',d:'месяцу',i:'месяцем',N:'Месяц'};
     var L='(?<![А-Яа-яЁё])',R='(?![А-Яа-яЁё])';
@@ -107,7 +109,9 @@
     var prog=programSection(f);if(prog)content+=section('programs','Программа года','дополнение к разбору',prog);
     result.innerHTML=content;result.hidden=false;document.querySelector('.hero').classList.add('form-collapsed');document.getElementById('matrix-diagram')&&MX.renderMatrix(document.getElementById('matrix-diagram'),f.M);document.getElementById('dl-pdf').addEventListener('click',function(){window.ForecastExport.busy(this,window.ForecastExport.pdf);});document.getElementById('dl-doc').addEventListener('click',function(){window.ForecastExport.busy(this,window.ForecastExport.word);});document.getElementById('new-calc').addEventListener('click',function(){result.hidden=true;document.querySelector('.hero').classList.remove('form-collapsed');document.querySelector('.hero').scrollIntoView({behavior:'smooth'});});result.scrollIntoView({behavior:'smooth',block:'start'});
   }
+  Array.prototype.forEach.call(document.querySelectorAll('#gender button'),function(b){b.addEventListener('click',function(){gender=b.getAttribute('data-g');Array.prototype.forEach.call(document.querySelectorAll('#gender button'),function(x){x.classList.toggle('on',x===b);});});});
   form.addEventListener('submit',function(ev){ev.preventDefault();error.hidden=true;var birth=dateFromInput(document.getElementById('birth-date').value),year=+yearInput.value;
+    if(!gender){error.textContent='Выберите пол: от этого зависят рекомендации в разборе.';error.hidden=false;return;}
     if(!birth){error.textContent='Проверьте дату рождения.';error.hidden=false;return;}
     if(!Number.isInteger(year)||year<1900||year>2200){error.textContent='Введите год от 1900 до 2200.';error.hidden=false;return;}
     if(year<birth.y){error.textContent='Год прогноза не может быть раньше года рождения.';error.hidden=false;return;}
