@@ -33,3 +33,4 @@ footer{margin-top:65px;padding:25px 0;border-top:1px solid var(--hair);display:f
 @media print{body{background:#fff;font-size:11px}.page-shell{max-width:none;padding:0 10px}.masthead,.hero,.actions,.toc,footer{display:none!important}#result[hidden]{display:block!important}.section{break-inside:auto;padding-top:22px}.card,.month-card,.key{box-shadow:none;break-inside:avoid}.result-top{padding-top:0}.matrix-wrap{max-width:420px}.month-card details{display:block}.month-card details:not([open])>*:not(summary){display:block!important}.month-card summary{display:none}}
 .sub-heading{font:500 18px var(--serif);color:var(--wine);margin:26px 0 12px}
 .levels{margin:6px 0 10px;padding-left:18px}.levels li{margin:0 0 8px}
+.swatches{display:flex;gap:6px;margin:10px 0 2px;flex-wrap:wrap}.swatch{display:inline-block;width:38px;height:38px;border:1px solid rgba(58,42,34,.18)}
